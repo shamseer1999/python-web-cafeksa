@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeKsa | Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Login</h1>
+<form method="post">
+    {% csrf_token %}
+    
+  <div class="row">
+    <label for="email">Username</label>
+    <input type="text" name="username" autocomplete="" placeholder="">
+  </div>
+  <div class="row">
+    <label for="password">Password</label>
+    <input type="password" name="password">
+  </div>
+  <button type="submit">Login</button>
+  <p>Create an account <a href="">Click Here</a><p>
+</form>
+</body>
+</html>
