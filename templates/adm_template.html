@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .card {
+      text-align: center;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+    <a class="navbar-brand text-white" href="#">Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="product-list.html">Product List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="user-list.html">User List</a>
+        </li>
+      </ul>
+    </div>
+    <div style="float:right">
+      {% comment %} <a href="" class="text-white p-2"><i class="fa fa-user" style="font-size:24px"></i> {{ user.username}}</a> {% endcomment %}
+      <ul class="navbar-nav mr-auto p-2">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-user" style="font-size:24px"></i> {{ user.username}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'adm_logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+            {% comment %} <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a> {% endcomment %}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container-fluid"><br>
+    <div class="alert-notify">
+      
+    </div>
+    {% block content %}{% endblock content %}
+</div>
+  
+<script>
+  // You can update the product and user counts dynamically
+  // Replace the 0 values below with your actual counts or use JavaScript to fetch and update the counts dynamically
+  
+  // Example:
+  var productCount = 50;
+  var userCount = 1000;
+  
+  // Update the card elements with the counts
+  document.getElementById("productCount").textContent = productCount;
+  document.getElementById("userCount").textContent = userCount;
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
