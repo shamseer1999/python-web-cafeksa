@@ -1,0 +1,45 @@
+{% extends 'adm_template.html' %}
+{% block content %}
+<style>
+    .card .card-header{
+        text-align : left
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-dark">All Products</h4>
+              </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sl.No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if page_obj %}
+                        {% for item in page_obj %}
+                        <tr>
+                            <td>{{page_obj.start_index|add:forloop.counter0}}</td>
+                            <td>{{ item.name}}</td>
+                            <td>{{ item.description}}</td>
+                            <td>
+                              <a href="" class="btn btn-primary">Edit</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                  </table>
+                  {% include 'layout/pagination.html' %}
+            </div>
+          </div>
+    </div>
+    
+</div>
+{% endblock content %}
