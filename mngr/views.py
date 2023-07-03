@@ -7,6 +7,7 @@ from .models import Product
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from .forms import ProductForm
+from django.contrib.auth.forms import PasswordChangeForm
 # Create your views here.
 
 User = get_user_model() 
@@ -121,3 +122,29 @@ def editProduct(request,product_id):
     }
     
     return render(request,'products/edit.html',context)
+
+@login_required(login_url='/mngr/')
+def changePassword(request):
+    
+    if request.method =="POST":
+        pswdForm = PasswordChangeForm(request.user,request.POST)
+        
+        if pswdForm.is_valid():
+            pswdForm.save()
+            messages.success(request,"Your password updated successfully")  # superadmin - cafeksa@123
+            return redirect('adm_profile')
+        else:
+            # for field in pswdForm:
+            #     for error in field.errors:
+            #         print(error)
+            messages.warning(request,"Something went wrong. Your password was not changed")
+            return redirect('change_password')
+    
+    form = PasswordChangeForm(user = request.user)
+    
+    context = {
+        'form' : form
+    }
+    # for key,value in form.__dict__.items():
+    #     print(f"{key} = {value}")
+    return render(request,'users/password_change.html',context)
