@@ -78,3 +78,17 @@ def usersList(request):
 def adminLogout(request):
     logout(request)
     return redirect('adm_login')
+
+@login_required(login_url='/mngr/')
+def profile(request):
+    context = {}
+    if request.user:
+        profile = User.objects.get(pk = request.user.id)
+        for key,value in profile.__dict__.items():
+            print(f"{key} : {value}")
+        context = {
+            'profile' : profile
+        }
+        return render(request,'users/profile.html',context)
+    else:
+        return redirect('adm_login')

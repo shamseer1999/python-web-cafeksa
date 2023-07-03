@@ -1,0 +1,44 @@
+{% extends 'adm_template.html' %}
+{% block content %}
+<style>
+    .card{
+        text-align : left
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-dark">Profile Details</h4>
+              </div>
+            <div class="card-body">
+                 <div class="row">
+                    <div class="col-md-3">
+                        <p>Username : </p>
+                        <p>First Name : </p>
+                        <p>Last Name : </p>
+                        <p>Email : </p>
+                        <p>Status : </p>
+                        <p>Change Password : </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>{{profile.username}}</p>
+                        <p>{{profile.first_name}}</p>
+                        <p>{{profile.last_name}}</p>
+                        <p>{{profile.email}}</p>
+                        <p>
+                            {% if profile.is_active == True %}
+                            {{'Active'}}
+                            {% else %}
+                            {{'Inactive'}}
+                            {% endif %}
+                        </p>
+                        <p><a href="">Click Here</a></p>
+                    </div>
+                 </div>  
+            </div>
+          </div>
+    </div>
+    
+</div>
+{% endblock content %}

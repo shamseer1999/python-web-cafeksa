@@ -36,6 +36,7 @@
             <i class="fa fa-user" style="font-size:24px"></i> {{ user.username}}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'adm_profile' %}"><i class="fa fa-user"></i> Profile</a>
             <a class="dropdown-item" href="{% url 'adm_logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
             {% comment %} <a class="dropdown-item" href="#">Another action</a>
             <div class="dropdown-divider"></div>
