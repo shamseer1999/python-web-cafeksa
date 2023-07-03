@@ -33,7 +33,7 @@
                             <td>{{ item.name}}</td>
                             <td>{{ item.description}}</td>
                             <td>
-                              <a href="" class="btn btn-primary">Edit</a>
+                              <a href="{% url 'edit_product' item.id %}" class="btn btn-primary">Edit</a>
                             </td>
                         </tr>
                         {% endfor %}

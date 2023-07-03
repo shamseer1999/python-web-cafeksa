@@ -92,3 +92,32 @@ def profile(request):
         return render(request,'users/profile.html',context)
     else:
         return redirect('adm_login')
+    
+@login_required(login_url='/mngr/')
+def editProduct(request,product_id):
+    product = Product.objects.get(pk = product_id)
+    
+    if request.method =='POST':
+        editForm = ProductForm(request.POST,instance = product)
+        name = request.POST.get('name')
+        
+        check = Product.objects.filter(name = name).exclude(pk = product_id).first()
+        
+        if check is not None:
+            # print(123)
+            messages.warning(request,"This name is used already")
+            return redirect('edit_product',product_id)
+        else:
+            # print(12345)
+            if editForm.is_valid():
+                editForm.save()
+                messages.success(request,"Your product updated successfully")
+                return redirect('product_list')
+    
+    form = ProductForm(instance = product)
+    
+    context = {
+        'form' : form
+    }
+    
+    return render(request,'products/edit.html',context)

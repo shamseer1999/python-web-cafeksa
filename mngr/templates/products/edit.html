@@ -1,0 +1,55 @@
+{% extends 'adm_template.html' %}
+{% block content %}
+<style>
+    .card{
+        text-align : left
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-dark">Edit Product</h4>
+              </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Product Name <span class="text-danger">*</span></label>
+                                {{ form.name }}
+                                {% if errors %}
+                                    <code>{{ errors.name }}</code>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="">Description <span class="text-danger">*</span></label>
+                                {{ form.description }}
+                                {% if errors %}
+                                    <code>{{ errors.description }}</code>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Creating Admin <span class="text-danger">*</span></label>
+                                {{ form.created_by }}
+                                {% if errors %}
+                                    <code>{{ errors.created_by }}</code>
+                                {% endif %}
+                            </div>
+                            <div class="form-group"><br>
+                                <input type="submit" class="btn btn-primary btn-md" value="Update">
+                                <a href="{% url 'product_list' %}" class="btn btn-secondary"> Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>   
+                  
+            </div>
+          </div>
+    </div>
+    
+</div>
+{% endblock content %}

@@ -15,7 +15,8 @@ class ProductForm(forms.ModelForm):
             
     def clean_name(self):
         data = self.cleaned_data['name']
-        if Product.objects.filter(name = data).exists():
-            raise ValidationError('This name is used already')
+        if self.instance.pk is None:   #check it is a new object
+            if Product.objects.filter(name = data).exists():
+                raise ValidationError('This name is used already')
         else:
             return data
