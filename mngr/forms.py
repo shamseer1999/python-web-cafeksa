@@ -20,3 +20,12 @@ class ProductForm(forms.ModelForm):
                 raise ValidationError('This name is used already')
         else:
             return data
+        
+class StockUpdate(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('name', 'stock')
+        widgets = {
+            'name' : forms.TextInput(attrs={'class':'form-control form-control-sm','readonly':True}),
+            'stock' : forms.NumberInput(attrs={'class':'form-control form-control-sm'})
+        }

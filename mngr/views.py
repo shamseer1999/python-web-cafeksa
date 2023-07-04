@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Product
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
-from .forms import ProductForm
+from .forms import ProductForm,StockUpdate
 from django.contrib.auth.forms import PasswordChangeForm
 # Create your views here.
 
@@ -148,3 +148,32 @@ def changePassword(request):
     # for key,value in form.__dict__.items():
     #     print(f"{key} = {value}")
     return render(request,'users/password_change.html',context)
+
+@login_required(login_url='/mngr/')
+def todaysOrder(request):
+    return HttpResponse('todays order')
+
+@login_required(login_url='/stockUpdate/')
+def stockUpdate(request,product_id):
+    
+    if request.method =='POST':
+        product = Product.objects.get(pk = product_id)
+        # print("product",product)
+        form = StockUpdate(request.POST,instance=product)
+        # print("form",form)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Stock updated successfully")
+            return redirect('product_list')
+        
+    stockForm = StockUpdate(initial={
+        'name' : Product.objects.filter(id = product_id).first(),
+        'stock' : Product.objects.filter(id = product_id).values_list('stock',flat=True).first()
+    })
+    # k =Product.objects.filter(id = product_id).values_list('stock',flat=True).first()
+    # print("nnnnn",k)
+    
+    context ={
+        'stockForm': stockForm
+    }
+    return render(request,'products/stock.html',context)
