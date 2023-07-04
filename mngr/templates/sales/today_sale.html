@@ -1,0 +1,111 @@
+{% extends 'adm_template.html' %}
+{% block content %}
+<style>
+    .card{
+        text-align : left
+    }
+    .paginate{
+      float:right
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-dark">Update Sales</h4>
+                {% comment %} <a href="{% url 'add_product' %}" class="btn btn-primary" style="float:right;margin-top: -33px;">Add Product</a> {% endcomment %}
+              </div>
+            <div class="card-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Date</label>
+                                {{ todaySale.sell_date}}
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" value="1" id="vl">
+                    <div id="incrimentDiv">
+                <div class="row" id="incrimentDiv1">
+                    
+                        
+                        
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Product</label>
+                                {{ todaySale.product}}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Sale Count</label>
+                                {{ todaySale.sell_count}}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" style="margin-top:35px">
+                                <i class="fa fa-plus" id="incrimentBtn"></i>
+                            </div>
+                        </div>
+                
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Update">
+            </form>
+            </div>
+          </div>
+    </div>
+    
+</div>
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+{% comment %} <script>
+    
+     $(document).ready(function(){
+        $("#incrimentBtn").click(function(){
+            var mainDiv = $("#incrimentDiv1")
+            var vl = $("#vl").val()
+            
+            k = parseInt(vl) + 1
+            var cloneDiv = mainDiv.clone()
+            
+            cloneDiv.attr('id','incrimentDiv'+k)
+            
+            
+            
+            $("#incrimentDiv").after(cloneDiv)
+        })
+    }); 
+</script> {% endcomment %}
+<script>
+    $(document).ready(function(){
+        var counter = 1;
+
+        $("#incrimentBtn").click(function(){
+            var mainDiv = $("#incrimentDiv1");
+            var vl = $("#vl").val();
+            
+            var k = parseInt(vl) + 1;
+            var cloneDiv = mainDiv.clone();
+            
+            cloneDiv.attr('id', 'incrimentDiv' + k);
+            
+            // Remove the plus button
+            cloneDiv.find("#incrimentBtn").removeClass("fa-plus").addClass("fa-minus");
+            
+            // Add a click event listener for the minus button
+            cloneDiv.find("#incrimentBtn").click(function() {
+                $(this).closest(".row").remove(); // Remove the cloned div
+            });
+            
+            $("#incrimentDiv" + vl).after(cloneDiv);
+            
+            vl = k;
+            $("#vl").val(vl);
+            
+            counter++;
+        });
+    }); 
+</script>
+{% endblock content %}

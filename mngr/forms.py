@@ -1,6 +1,9 @@
 from django import forms
-from .models import Product
+from .models import Product,Sale
 from django.core.exceptions import ValidationError
+
+class DateInput(forms.DateInput):
+    input_type='date'
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -28,4 +31,20 @@ class StockUpdate(forms.ModelForm):
         widgets = {
             'name' : forms.TextInput(attrs={'class':'form-control form-control-sm','readonly':True}),
             'stock' : forms.NumberInput(attrs={'class':'form-control form-control-sm'})
+        }
+
+class SaleUpdate(forms.ModelForm):
+    product = forms.ModelChoiceField(
+        queryset=Product.objects.all(),
+        widget=forms.Select(
+            attrs={'class':'form-control form-control-sm'}
+            )
+        )
+    
+    class Meta:
+        model = Sale
+        fields = ('sell_date','product','sell_count')
+        widgets = {
+            'sell_date' : DateInput(attrs={'class':'form-control form-control-sm'}),
+            'sell_count' : forms.NumberInput(attrs={'class':'form-control form-control-sm'})
         }

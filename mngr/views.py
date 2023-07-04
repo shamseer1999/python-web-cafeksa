@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Product
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
-from .forms import ProductForm,StockUpdate
+from .forms import ProductForm,StockUpdate,SaleUpdate
 from django.contrib.auth.forms import PasswordChangeForm
+from datetime import datetime
 # Create your views here.
 
 User = get_user_model() 
@@ -151,7 +152,39 @@ def changePassword(request):
 
 @login_required(login_url='/mngr/')
 def todaysOrder(request):
-    return HttpResponse('todays order')
+    if request.method =='POST':
+        selling_date = request.POST.get('sell_date')
+        productList = request.POST.getlist('product')
+        sellCountList = request.POST.getlist('sell_count')
+        productSaleCount =zip(request.POST.getlist('product'),request.POST.getlist('sell_count'))
+        for product,sell_count in productSaleCount:
+            
+            checkProductStock = Product.objects.filter(id = product,stock__gte = sell_count).first()
+            # print("fdf",checkProductStock)
+            if checkProductStock is not None:
+                # print("fff",checkProductStock._meta.get_fields())
+                data_dict = {'product':product,'sell_count':sell_count,'sell_date':selling_date}
+                form = SaleUpdate(data_dict)
+                if form.is_valid():
+                    f = form.save(commit=False)
+                    f.created_by = request.user
+                    f.save()
+            
+        
+        sell_date = request.POST.get('sell_date')
+        date = datetime.strptime(sell_date,'%Y-%m-%d') #convert string date to datetime object
+        formattedDate = date.strftime("%B %d, %Y")
+        
+        messages.success(request,"Your sales report of "+formattedDate+" updated")
+        return redirect('dashboard')
+                
+    todaySale = SaleUpdate()
+    
+    context = {
+        'todaySale' : todaySale
+    }
+    # return HttpResponse('todays order')
+    return render(request,'sales/today_sale.html',context)
 
 @login_required(login_url='/stockUpdate/')
 def stockUpdate(request,product_id):
