@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from .forms import ProductForm,StockUpdate,SaleUpdate
 from django.contrib.auth.forms import PasswordChangeForm
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 User = get_user_model() 
@@ -210,3 +211,13 @@ def stockUpdate(request,product_id):
         'stockForm': stockForm
     }
     return render(request,'products/stock.html',context)
+
+@login_required(login_url='/mngr/')
+@csrf_exempt
+def stockCount(request):
+    if request.method == 'POST':
+        product = request.POST.get('product')
+        stockCount = Product.objects.filter(id = product).values_list('stock',flat=True).first()
+        return JsonResponse({
+            'productStock':stockCount
+        })

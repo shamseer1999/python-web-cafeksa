@@ -35,9 +35,9 @@ class StockUpdate(forms.ModelForm):
 
 class SaleUpdate(forms.ModelForm):
     product = forms.ModelChoiceField(
-        queryset=Product.objects.all(),
+        queryset=Product.objects.exclude(stock__isnull =True).all(),
         widget=forms.Select(
-            attrs={'class':'form-control form-control-sm'}
+            attrs={'class':'form-control form-control-sm','onchange':'checkItemCount(this)'}
             )
         )
     

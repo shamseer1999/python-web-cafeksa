@@ -34,7 +34,7 @@
                         
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="">Product</label>
+                                <label for="" class="incrimentLabel1">Product</label>
                                 {{ todaySale.product}}
                             </div>
                         </div>
@@ -93,7 +93,8 @@
             
             // Remove the plus button
             cloneDiv.find("#incrimentBtn").removeClass("fa-plus").addClass("fa-minus");
-            
+            cloneDiv.find(".incrimentLabel1").removeClass("incrimentLabel1").addClass("incrimentLabel"+k)
+            cloneDiv.find(".incrimentLabel"+k).text("Product")
             // Add a click event listener for the minus button
             cloneDiv.find("#incrimentBtn").click(function() {
                 $(this).closest(".row").remove(); // Remove the cloned div
@@ -107,5 +108,28 @@
             counter++;
         });
     }); 
+
+</script>
+<script>
+    function checkItemCount(vl){
+        var k = $("#vl").val()
+        var item = vl.value
+
+        $.ajax({
+            type:'POST',
+            url:"{% url 'stock_count' %}",
+            data:{
+                product:item
+            },
+            success:function(data){
+                if(data.productStock !=null){
+                    $(".incrimentLabel"+k).text("Product(Total stock : "+data.productStock+")")
+                }else{
+                    $(".incrimentLabel"+k).text("Product(Total stock : 0)")
+                }
+                
+            }
+        })
+    }
 </script>
 {% endblock content %}

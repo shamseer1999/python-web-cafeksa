@@ -12,5 +12,6 @@ urlpatterns = [
     path('product/edit-product/<int:product_id>',views.editProduct,name='edit_product'),
     path('change-password',views.changePassword,name='change_password'),
     path('stock-update/<int:product_id>',views.stockUpdate,name='stock_update'),
+    path('stock-count',views.stockCount,name='stock_count'),
     path('todys-order',views.todaysOrder,name='todays_order')
 ]
