@@ -1,7 +1,8 @@
 {% extends 'adm_template.html' %}
 {% block content %}
+{% load crispy_forms_tags %}
 <style>
-    .card .card-header{
+    .card{
         text-align : left
     }
     .paginate{
@@ -12,10 +13,32 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="text-dark">All Orders</h4>
+                <h4 class="text-dark">All Sales</h4>
                 {% comment %} <a href="{% url 'add_product' %}" class="btn btn-primary" style="float:right;margin-top: -33px;">Add Product</a> {% endcomment %}
               </div>
+              <div class="card-body">
+                <form action="" method="GET">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <label for="">Sale Date:</label>
+                      {{saleFilter.form.sell_date}}
+                    </div>
+                    <div class="col-lg-3">
+                      <label for="">Product:</label>
+                      {{saleFilter.form.product}}
+                      
+                    </div>
+                    <div class="col-lg-2 pt-4">
+                      <input type="submit" class="btn btn-secondary" value="Filter" name="filter"> 
+                      <input type="submit" class="btn btn-secondary" value="Clear" name="filter"> 
+                    </div>
+                  </div>
+              </form>
+                  
+                
+              </div>
             <div class="card-body">
+              
                 <table class="table">
                     <thead>
                       <tr>

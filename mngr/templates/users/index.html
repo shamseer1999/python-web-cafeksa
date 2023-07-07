@@ -1,7 +1,7 @@
 {% extends 'adm_template.html' %}
 {% block content %}
 <style>
-    .card .card-header{
+    .card{
         text-align : left
     }
 </style>
@@ -10,6 +10,24 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="text-dark">All Users</h4>
+              </div>
+              <div class="card-body">
+                <form action="" method="GET">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="">Username:</label>
+                            {{userFilter.form.username}}
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="">Staff Status:</label>
+                            {{userFilter.form.is_staff}}
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <input type="submit" name="filter" value="Filter" class="btn btn-secondary" id="">
+                            <input type="submit" name="filter" value="Clear"  class="btn btn-secondary" id="">
+                        </div>
+                    </div>
+                </form>
               </div>
             <div class="card-body">
                 <table class="table">

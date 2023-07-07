@@ -11,6 +11,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Sum
+from .filters import SaleFilter,ProductFilter,UserFilter
 # Create your views here.
 
 User = get_user_model() 
@@ -44,6 +45,15 @@ def index(request):
 @login_required(login_url='/mngr/')
 def productsList(request):
     results = Product.objects.order_by('-id').all()
+    productFilter = ProductFilter()
+    
+    if request.method =='GET' and request.GET.get('filter') == 'Clear':
+        return redirect('product_list')
+    
+    if request.method == 'GET' and request.GET.get('filter') == 'Filter':
+        productFilter=ProductFilter(request.GET,results)
+        results = productFilter.qs
+        
     products = Paginator(results,10)
     page_number = request.GET.get("page")
     page_obj = products.get_page(page_number)
@@ -71,6 +81,16 @@ def addProduct(request):
 def usersList(request):
     
     users = User.objects.order_by('-id').all()
+    
+    userFilter = UserFilter()
+    
+    if request.method == 'GET' and request.GET.get('filter') =='Clear':
+        return redirect('user_list')
+    
+    if request.method == 'GET' and request.GET.get('filter') == 'Filter':
+        userFilter = UserFilter(request.GET,users)
+        users = userFilter.qs
+        
     results = Paginator(users,10)
     page_number = request.GET.get("page")
     page_obj = results.get_page(page_number)
@@ -229,13 +249,23 @@ def stockCount(request):
 @login_required(login_url='/mngr/')
 def allOrders(request):
     allOrders = Sale.objects.order_by('sell_date').all()
+    
+    saleFilter = SaleFilter()
+    if request.method =='GET' and request.GET.get('filter') =='Clear':
+        return redirect('all_orders')
+    
+    if request.method =='GET' and request.GET.get('filter') == 'Filter':
+        saleFilter = SaleFilter(request.GET,queryset=allOrders)
+        allOrders = saleFilter.qs
+        
     grandTotal = allOrders.aggregate(total_sell_count = Sum('sell_count'))
-    # print("grand",grandTotal['total_sell_count'])
+        
     results = Paginator(allOrders,10)
     page_number = request.GET.get('page')
     page_obj = results.get_page(page_number)
     context = {
         'page_obj':page_obj,
-        'grand_total':grandTotal['total_sell_count']
+        'grand_total':grandTotal['total_sell_count'],
+        'saleFilter':saleFilter
     }
     return render(request,'sales/all_orders.html',context)

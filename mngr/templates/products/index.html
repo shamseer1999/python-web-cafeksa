@@ -1,7 +1,7 @@
 {% extends 'adm_template.html' %}
 {% block content %}
 <style>
-    .card .card-header{
+    .card{
         text-align : left
     }
     .paginate{
@@ -14,6 +14,20 @@
             <div class="card-header">
                 <h4 class="text-dark">All Products</h4>
                 <a href="{% url 'add_product' %}" class="btn btn-primary" style="float:right;margin-top: -33px;">Add Product</a>
+              </div>
+              <div class="card-body">
+                <form action="" method="GET">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <label for="">Name:</label>
+                      {{productFilter.form.name}}
+                    </div>
+                    <div class="col-lg-3 pt-4">
+                      <input type="submit" value="Filter" name="filter" class="btn btn-secondary">
+                      <input type="submit" value="Clear" name="filter" class="btn btn-secondary">
+                    </div>
+                  </div>
+                </form>
               </div>
             <div class="card-body">
                 <table class="table">
