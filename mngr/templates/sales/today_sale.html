@@ -95,6 +95,7 @@
             cloneDiv.find("#incrimentBtn").removeClass("fa-plus").addClass("fa-minus");
             cloneDiv.find(".incrimentLabel1").removeClass("incrimentLabel1").addClass("incrimentLabel"+k)
             cloneDiv.find(".incrimentLabel"+k).text("Product")
+            cloneDiv.find(".clone").val("")
             // Add a click event listener for the minus button
             cloneDiv.find("#incrimentBtn").click(function() {
                 $(this).closest(".row").remove(); // Remove the cloned div

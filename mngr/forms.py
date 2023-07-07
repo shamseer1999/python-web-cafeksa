@@ -46,5 +46,5 @@ class SaleUpdate(forms.ModelForm):
         fields = ('sell_date','product','sell_count')
         widgets = {
             'sell_date' : DateInput(attrs={'class':'form-control form-control-sm'}),
-            'sell_count' : forms.NumberInput(attrs={'class':'form-control form-control-sm'})
+            'sell_count' : forms.NumberInput(attrs={'class':'form-control form-control-sm clone'})
         }

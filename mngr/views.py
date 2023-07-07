@@ -3,13 +3,14 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Product
+from .models import Product,Sale
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from .forms import ProductForm,StockUpdate,SaleUpdate
 from django.contrib.auth.forms import PasswordChangeForm
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
 # Create your views here.
 
 User = get_user_model() 
@@ -161,7 +162,6 @@ def todaysOrder(request):
         for product,sell_count in productSaleCount:
             
             checkProductStock = Product.objects.filter(id = product,stock__gte = sell_count).first()
-            # print("fdf",checkProductStock)
             if checkProductStock is not None:
                 # print("fff",checkProductStock._meta.get_fields())
                 data_dict = {'product':product,'sell_count':sell_count,'sell_date':selling_date}
@@ -170,6 +170,10 @@ def todaysOrder(request):
                     f = form.save(commit=False)
                     f.created_by = request.user
                     f.save()
+                    
+                    updProduct = checkProductStock.stock - int(sell_count)
+                    checkProductStock.stock = updProduct
+                    checkProductStock.save()
             
         
         sell_date = request.POST.get('sell_date')
@@ -177,7 +181,7 @@ def todaysOrder(request):
         formattedDate = date.strftime("%B %d, %Y")
         
         messages.success(request,"Your sales report of "+formattedDate+" updated")
-        return redirect('dashboard')
+        return redirect('all_orders')
                 
     todaySale = SaleUpdate()
     
@@ -221,3 +225,17 @@ def stockCount(request):
         return JsonResponse({
             'productStock':stockCount
         })
+
+@login_required(login_url='/mngr/')
+def allOrders(request):
+    allOrders = Sale.objects.order_by('sell_date').all()
+    grandTotal = allOrders.aggregate(total_sell_count = Sum('sell_count'))
+    # print("grand",grandTotal['total_sell_count'])
+    results = Paginator(allOrders,10)
+    page_number = request.GET.get('page')
+    page_obj = results.get_page(page_number)
+    context = {
+        'page_obj':page_obj,
+        'grand_total':grandTotal['total_sell_count']
+    }
+    return render(request,'sales/all_orders.html',context)
